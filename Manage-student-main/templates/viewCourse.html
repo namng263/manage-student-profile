@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>View Course</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/viewCourse.css') }}"/>
+    </head>
+    <body>
+        <form method="POST" action="/adReturn">
+            <div class="input-group-append" id="button-home">
+                <button class="btn btn-home" type="submit" value="adReturn">Home</button>
+            </div>
+        </form>
+            <h1>{{currentCourse.courseID}}</h1>   
+            {% if currentCourse['courseStatus'] == "unfinish": %}
+        <div class="container-edit"> 
+            <h2>Edit This Course Skill</h2>
+            <form method="POST" action="/viewCourse/editSoftSkill">
+                {% for skill in skillList: %}
+                    <input type="checkbox" name="checkbox" value="{{skill.skillName}}"> {{skill.skillName}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                {% endfor %}
+                <div class="input-group-append" id="button-manage">
+                    <button class="btn btn-edit" type="submit" onclick="return confirmation()" value="update">Change skill</button>
+                </div>       
+            </form>
+        </div>
+
+        <div class="container-skill">    
+            <h2>Skills Provided By This Course</h2>
+            {% for softSkill in softSkillList: %}
+            <div class="skill">
+                {{softSkill.skillName}}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="container-add">
+            <h2>Add Student</h2>
+            <form name="contactForm" method="POST" action="/viewCourse/addStudent"  onsubmit="return validateForm()">
+                <div class="add-student">
+                    <input class="form-control" type="text" name="stuID" placeholder="Enter student's ID (number)" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                    <div class="input-group-append" id="button-manage">
+                        <button class="btn btn-add" type="submit" value="update">Add to course</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+            <div class="container-list">
+                <h2>Student List</h2>
+                {% for student in studentList: %}
+                <p> 
+                    <form method="POST" action="/viewCourse/failStudent">
+                        <div class="student-list">
+                            <input type="hidden" name="id" value="{{student.id}}">
+                            <input class="form-control" type="text" name="stuID" value="{{student.stuID}}" readonly>
+                            <input class="form-control" type="text" name="name" value="{{student.name}}" readonly>
+                            
+                            <div class="input-group-append">
+                                <button class="btn btn-fail" type="submit" name="clickBtn" onclick="return confirmation()" value="fail">Fail</button> 
+                            </div>
+                        </div>
+                    </form>
+                </p>
+                
+            {% endfor %}
+            <form method="POST" action="/viewCourse/passStudent">
+                <div class="input-group-append" id="button-manage">
+                    <button class="btn btn-pass" type="submit" onclick="return confirmation()" value="pass">Pass All</button>
+                </div>            
+            </form>
+            </div>
+                {% else %}
+                <div class="container-announce">
+                <h2>THIS COURSE HAS END!</h2>
+                <h3>Skills Provided By This Course</h3>
+                {% for softSkill in softSkillList: %}
+                <div class="skill">
+                {{softSkill.skillName}}
+                </div>
+                {% endfor %}
+                </div>
+                <div class="container-passed">
+                <h3>Student Passed</h3>
+                {% for student in studentList: %}
+                    <p> 
+                        <form method="POST" action="viewCV">
+                            <div class="student-list">
+                                <input type="hidden" name="id" value="{{student.id}}">
+                                <input class="form-control" type="text" name="stuID" value="{{student.stuID}}" readonly>
+                                <input class="form-control" type="text" name="name" value="{{student.name}}" readonly>
+                            
+                                <div class="input-group-append">
+                                    <button class="btn btn-view" type="submit" name="clickBtn" value="view">ViewCV</button> 
+                                </div>
+                            </div>
+                        </form>
+                    </p>
+                {% endfor %}
+                <form method="POST" action="/viewCourse/passStudent">
+                    <div class="input-group-append" id="button-manage">
+                        <button class="btn btn-success" type="submit" value="pass" disabled>Passed</button>
+                    </div>
+                </form>
+            {% endif %}
+                </div>  
+    </body>
+</html>
+
+<script>    
+function validateForm() {
+    var stuID = document.forms["contactForm"]["stuID"].value;
+    if (stuID == "") {
+      alert("Enter student's ID first");
+      return false;
+    }
+}
+function confirmation(){
+    return confirm("Are you sure?");    
+}
+</script>

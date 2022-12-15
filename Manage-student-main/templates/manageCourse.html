@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Manage Course</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/manageCourse.css') }}"/>
+    </head>
+    <body>
+        <form method="POST" action="/adReturn">
+            <div class="input-group-append" id="button-home">
+                <button class="btn btn-home" type="submit" value="adReturn">Home</button>
+            </div>
+        </form>
+        <h1>Manage Course</h1>
+        <div class="container-add">
+            <h2 class="title">Add Course</h2>
+            <form name="contactForm" method="POST" action="/manageCourse/addCourse" onsubmit="return validateForm()">
+                <div class="course-info">
+                    <input class="form-control" type="text" name="courseID" placeholder="Enter new course ID">
+                    <input class="form-control" type="text" name="courseVieName" placeholder="Enter Vietnamese course's name">
+                    <input class="form-control" type="text" name="courseEngName" placeholder="Enter English course's name">
+                </div>
+                {% for skill in skillList: %}
+                    <input type="checkbox" name="checkbox" value="{{skill.skillName}}"> {{skill.skillName}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                {% endfor %}
+                <div class="input-group-append" id="add-skill">
+                    <button class="btn btn-add" type="submit" value="update">Create new</button>
+                </div>
+            </div>
+            </form>
+            <div class="container-list">
+            <h2 class="title">Course List</h2>
+                <form method="GET" action="/manageCourse/searchCourse">
+                    <div class="search">
+                        <input type="text" class="form-search" name="q" id="q" placeholder="Search...">
+                        <div class="input-group-append" id="btn-course">
+                            <button type="submit" class="btn btn-search">Search</button>
+                        </div>
+                    </div>
+                </form>
+            {% for course in courseList: %}            
+                <p> 
+                    <form method="POST" action="/manageCourse/editCourse">
+                        <div class="control">
+                            <input type="hidden" name="id" value="{{course.id}}">
+                            <input class="form-control" type="text" name="courseID" value="{{course.courseID}}" placeholder="Enter course'ID">
+                            <input class="form-control" type="text" name="courseVieName" value="{{course.courseVieName}}" placeholder="Vietnamese's name">
+                            <input class="form-control" type="text" name="courseEngName" value="{{course.courseEngName}}" placeholder="English's name">
+                            
+                            <div class="input-group-append" id="btn-course">
+                                <button class="btn btn-control" type="submit" name="clickBtn" value="view">View</button>
+                                <button class="btn btn-control" type="submit" name="clickBtn" onclick="return confirmation()" value="update">Update</button> 
+                                <button class="btn btn-control" type="submit" name="clickBtn" onclick="return confirmation()" value="delete">Delete</button> 
+                            </div>
+                        </div>
+                           
+                    </form> 
+                </p>
+            {% endfor %}
+            </div>
+    </div>
+    </body>
+</html>
+
+<script>    
+	function validateForm() {
+	var courseID = document.forms["contactForm"]["courseID"].value;
+	if (courseID == "") {
+		alert("Course ID part is not filled in");
+		return false;
+	}
+	var courseVieName = document.forms["contactForm"]["courseVieName"].value;
+	if (courseVieName == "") {
+		alert("Vietnamese part is not filled in");
+		return false;
+	}
+	var courseEng = document.forms["contactForm"]["courseEngName"].value;
+	if (courseEng == "") {
+		alert("English part is not filled in");
+		return false;
+	}
+  }
+
+  function confirmation() {
+    return confirm("Are you sure?");    
+}
+  </script>

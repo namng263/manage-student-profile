@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Student's CV management system</title>
+    <link rel="stylesheet" href="static/css/login.css">
+  </head>
+  <body>
+    <div class="center">
+      <h1>Login</h1>
+      <form name="contactForm" method="POST" action="/login" onsubmit="return validateForm()">
+        <div class="txt_field">
+          <input class="form-control" type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="userID" placeholder="Enter user's ID (number)">
+        </div>
+        <div class="txt_field">
+          <input class="form-control" type="password" name="password" placeholder="Enter password" minlength="6">
+        </div>
+
+        <div class="input-group-append">
+          <button class="btn btn-login" type="submit" value="update">Login</button>
+        </div>
+        
+      </form>
+    </div>
+
+  </body>
+</html>
+
+<script>    
+  function validateForm() {
+  var name = document.forms["contactForm"]["userID"].value;
+  if (name == "") {
+      alert("User ID part is not filled in");
+      return false;
+  }
+  var password = document.forms["contactForm"]["password"].value;
+  if (password == "") {
+      alert("Password part is not filled in");
+      return false;
+  }
+}
+</script>

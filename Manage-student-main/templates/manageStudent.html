@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Manage Student</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/manageStudent.css') }}"/>
+    </head>
+    <body>
+        <form method="POST" action="/adReturn">
+            <div class="input-group-append" id="button-home">
+                <button class="btn btn-home" type="submit" value="adReturn">Home</button>
+            </div>
+        </form>
+        <h1>Manage student</h1>
+        <div class="container">
+            <h2>Add Student</h2>
+            <form name="contactForm" method="POST" action="/manageStudent/addStudent" onsubmit="return validateForm()">
+                <div class="add">
+                        <input class="form-control-radius" type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57'name="stuID" placeholder="Enter student's ID (number)">
+                        <input class="form-control-radius" type="text" name="name" placeholder="Enter student's name">
+                </div>    
+                    <div id="button-add">
+                        <button class="btn btn-add" type="submit" value="update">Create new</button>
+                    </div>
+            </form>
+        </div>
+        <div class="container">
+            <h2>Student List</h2>
+            <form method="GET" action="/manageStudent/searchStudent">
+                <div class="search">
+                    <input type="text" class="form-control" name="q" id="q" placeholder="Search...">
+                    <div class="input-group-append" id="button-list">
+                        <button type="submit" class="btn btn-search">Search</button>
+                    </div>
+                </div>
+            </form>
+            {% for student in studentList: %}
+                <p> 
+                    <form method="POST" action="/manageStudent/editStudent">
+                        <div class="control">
+                            
+                                <input type="hidden" name="id" value="{{student.id}}">
+                                <input class="form-control-radius" type="text" name="stuID" value="{{student.stuID}}" readonly>
+                                <input class="form-control-radius" type="text" name="name" value="{{student.name}}"placeholder="Enter student's name">
+                            
+                            <div class="container-right" id="button-list">
+                                <button class="btn btn-control" type="submit" name="clickBtn" value="update"
+                                onclick="return confirmation()">Update</button> 
+                                <button class="btn btn-control" type="submit" name="clickBtn" value="delete" 
+                                onclick="return confirmation()">Delete</button> 
+                            </div>
+                        </div>
+                    </form> 
+                </p>
+            {% endfor %} 
+        </div>
+    </div>
+    </body>
+</html>
+
+<script>    
+    function validateForm() {
+    var id = document.forms["contactForm"]["stuID"].value;
+    if (id == "") {
+        alert("User ID part is not filled in");
+        return false;
+    }
+    var name = document.forms["contactForm"]["name"].value;
+    if (name == "") {
+        alert("Name part is not filled in");
+        return false;
+    }
+  }
+  function confirmation(){
+    return confirm("Are you sure?");    
+}
+</script>

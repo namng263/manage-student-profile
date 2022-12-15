@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Manage Skill</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="static/css/manageSkill.css">
+    </head>
+    <body>
+        <form method="POST" action="/adReturn">
+            <div class="input-group-append" id="button-home">
+                <button class="btn btn-home" type="submit" value="adReturn">Home</button>
+            </div>
+        </form>
+        <h1 class="title">Manage skill</h1>
+        <div class="container">
+            <h2 class="title">Add Skill</h2>
+            <form name="contactForm" method="POST" action="/manageSkill/addSkill" onsubmit="return validateForm()">
+                <div class="add">
+                    <input class="form-control" type="text" name="skillName" placeholder="Enter new skill">
+                    <div class="input-group-append" id="button-add">
+                        <button class="btn btn-create" type="submit" value="update">Create new</button>
+                    </div>
+                </div>
+            </div>
+            </form>
+            <div class="container">
+            <h2 class="title">Skill List</h2>
+            {% for skill in skillList: %}
+                <p> 
+                    <form method="POST" action="/manageSkill/editSkill">
+                        <div class="manage">
+                            <input type="hidden" name="id" value="{{skill.id}}">
+                            <input class="form-control" type="text" name="skillName" value="{{skill.skillName}}" placeholder="Enter skill">
+                            
+                            <div class="input-group-append" id="button-control">
+                                <button class="btn btn-control" type="submit" name="clickBtn" onclick="return confirmation()" value="update">Update</button> 
+                                <button class="btn btn-control" type="submit" name="clickBtn" onclick="return confirmation()" value="delete">Delete</button> 
+                            </div>
+                        </div>
+                    </form> 
+                </p>
+            {% endfor %} 
+        </div>
+    </div>
+    </div>
+    </body>
+</html>
+
+<script>    
+    function validateForm() {
+    var skill = document.forms["contactForm"]["skillName"].value;
+    if (skill == "") {
+        alert("Skill part is not filled in");
+        return false;
+    }
+}
+    function confirmation() {
+        return confirm("Are you sure?");    
+}
+</script>
+ 
